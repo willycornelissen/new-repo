@@ -122,11 +122,7 @@ func TestCreateOpenSpecDirs(t *testing.T) {
 	expected := []string{
 		filepath.Join(dir, "openspec", "specs"),
 		filepath.Join(dir, "openspec", "changes", "archive"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-propose"),
 		filepath.Join(dir, ".opencode", "skills", "openspec-explore"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-apply-change"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-sync-specs"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-archive-change"),
 	}
 
 	for _, path := range expected {
@@ -173,11 +169,7 @@ func TestWriteOpenSpecSkills(t *testing.T) {
 	}
 
 	expected := []string{
-		"openspec-propose",
 		"openspec-explore",
-		"openspec-apply-change",
-		"openspec-sync-specs",
-		"openspec-archive-change",
 	}
 
 	for _, name := range expected {
