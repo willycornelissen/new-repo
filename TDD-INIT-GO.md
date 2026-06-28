@@ -51,6 +51,8 @@ Este projeto faz parte do domínio de **automação de setup de desenvolvimento*
 - Cria um arquivo `SKILLS.md` no diretório gerado.
 - Lê as skills de um arquivo `SKILLS.md` de origem (embutido ou via flag) e as copia para o diretório de skills do opencode (`~/.config/opencode/skills/` ou diretório local `.opencode/skills/`).
 - Gera estrutura de diretórios `.opencode/` configurada.
+- Gera estrutura `openspec/` com `specs/`, `changes/archive/` e `config.yaml` (pronto para OpenSpec).
+- Instala skills OpenSpec (`openspec-propose`, `openspec-explore`, `openspec-apply-change`, `openspec-sync-specs`, `openspec-archive-change`) em `.opencode/skills/`.
 - Flag `--help` documentada.
 
 ### ❌ Excluído (V1)
@@ -80,6 +82,8 @@ Este projeto faz parte do domínio de **automação de setup de desenvolvimento*
                                  ├─ Cria .gitignore
                                  ├─ Cria SKILLS.md
                                  ├─ Cria .opencode/skills/ (com skills locais)
+                                 ├─ Cria openspec/ (specs, changes, config.yaml)
+                                 ├─ Instala skills OpenSpec
                                  └─ Executa git init
 ```
 
@@ -91,8 +95,9 @@ Este projeto faz parte do domínio de **automação de setup de desenvolvimento*
 4. Copia SKILLS.md de origem (recurso embutido ou `--skills-file`) para `meu-projeto/SKILLS.md`.
 5. Lê o SKILLS.md, extrai os nomes das skills, copia cada skill do diretório de skills local para `meu-projeto/.opencode/skills/<skill>/`.
 6. Cria `.gitignore` com entradas padrão Go.
-7. Executa `git init` dentro do diretório gerado.
-8. Exibe mensagem de sucesso com caminho absoluto.
+7. Cria `openspec/` com `specs/`, `changes/archive/`, `config.yaml` e skills OpenSpec em `.opencode/skills/openspec-*/`.
+8. Executa `git init` dentro do diretório gerado.
+9. Exibe mensagem de sucesso com caminho absoluto.
 
 ### Estrutura de Arquivos Gerada
 
@@ -100,8 +105,23 @@ Este projeto faz parte do domínio de **automação de setup de desenvolvimento*
 meu-projeto/
 ├── .gitignore
 ├── SKILLS.md
+├── openspec/
+│   ├── specs/
+│   ├── changes/
+│   │   └── archive/
+│   └── config.yaml
 ├── .opencode/
 │   └── skills/
+│       ├── openspec-propose/
+│       │   └── SKILL.md
+│       ├── openspec-explore/
+│       │   └── SKILL.md
+│       ├── openspec-apply-change/
+│       │   └── SKILL.md
+│       ├── openspec-sync-specs/
+│       │   └── SKILL.md
+│       ├── openspec-archive-change/
+│       │   └── SKILL.md
 │       ├── skill-a/
 │       │   └── SKILL.md
 │       ├── skill-b/
@@ -207,3 +227,5 @@ new-repo/
 | Localização das skills | `.opencode/skills/` dentro do projeto | Skills locais ao projeto, portabilidade sem depender da máquina hospedeira |
 | Origem do SKILLS.md | Embutido no binário via `//go:embed` | Binário autocontido, sem dependência de arquivo externo, distribuição simplificada |
 | Flag `--no-git` | Não implementar | Não há caso de uso identificado que justifique a flag |
+| Scaffold OpenSpec | Integrado no `new-repo` | Projeto já sai com `openspec/` estruturado e skills `/opsx:*` instaladas, sem necessidade de rodar `openspec init` separadamente |
+| Skills OpenSpec | Geradas nativamente em `.opencode/skills/openspec-*/` | Skills auto-contidas no binário via funções Go (sem depender de arquivos externos ou `openspec init`) |

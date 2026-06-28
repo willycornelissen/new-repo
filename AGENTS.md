@@ -17,6 +17,7 @@ Implemented and working. See `TDD-INIT-GO.md` for design decisions.
 - **Packages** — `internal/{scaffold,skill,git,config}/`
 - **Skills origin** — embedded in binary via `//go:embed SKILLS.md`
 - **Skills destination** — `.opencode/skills/<skill-name>/` inside target dir
+- **OpenSpec scaffold** — creates `openspec/{specs,changes/archive}/` + `openspec/config.yaml` + `.opencode/skills/openspec-*/SKILL.md`
 - **No `--no-git` flag**
 
 ## Commands

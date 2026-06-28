@@ -28,10 +28,20 @@ Isso cria a seguinte estrutura:
 meu-projeto/
 ├── .gitignore
 ├── SKILLS.md
+├── openspec/
+│   ├── specs/              # Suas especificações (source of truth)
+│   ├── changes/            # Mudanças propostas
+│   │   └── archive/        # Mudanças arquivadas
+│   └── config.yaml         # Configuração do OpenSpec
 ├── .opencode/
 │   └── skills/
 │       ├── coding-guidelines/
 │       ├── context7/
+│       ├── openspec-propose/       # /opsx:propose
+│       ├── openspec-explore/       # /opsx:explore
+│       ├── openspec-apply-change/  # /opsx:apply
+│       ├── openspec-sync-specs/    # /opsx:sync
+│       ├── openspec-archive-change/# /opsx:archive
 │       └── ... (demais skills instaladas)
 └── .git/
 ```
@@ -48,8 +58,10 @@ meu-projeto/
 
 - **Validação de nome** — apenas caracteres alfanuméricos, hífen e underscore
 - **`.gitignore` padrão** — entradas para Go, OS e IDEs
-- **Skills` embutidas** — 13 skills opencode são copiadas para `.opencode/skills/`
+- **Skills embutidas** — skills opencode são copiadas para `.opencode/skills/`
 - **Skills personalizadas** — use `--skills-file` para fornecer seu próprio conjunto
+- **OpenSpec pronto** — estrutura `openspec/` criada com `specs/`, `changes/archive/` e `config.yaml`
+- **Comandos OpenSpec** — skills `/opsx:propose`, `/opsx:explore`, `/opsx:apply`, `/opsx:sync` e `/opsx:archive` pré-instaladas
 - **`git init` automático** — repositório iniciado logo após a criação
 
 ## Desenvolvimento

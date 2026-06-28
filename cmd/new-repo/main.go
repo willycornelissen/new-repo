@@ -54,6 +54,21 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err := scaffold.CreateOpenSpecDirs(name); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	if err := scaffold.WriteOpenSpecConfig(name); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	if err := scaffold.WriteOpenSpecSkills(name); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
 	var skillsContent string
 	if *skillsFile != "" {
 		data, err := os.ReadFile(*skillsFile)
