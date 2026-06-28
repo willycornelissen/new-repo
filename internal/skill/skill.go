@@ -46,23 +46,30 @@ func ParseSkills(data string) ([]string, error) {
 	return skills, nil
 }
 
-func InstallSkills(dstDir, srcDir string, names []string) error {
+func InstallSkills(dstDir string, srcDirs []string, names []string) error {
 	for _, name := range names {
-		src := filepath.Join(srcDir, name)
-		dst := filepath.Join(dstDir, name)
+		found := false
+		for _, srcDir := range srcDirs {
+			src := filepath.Join(srcDir, name)
 
-		info, err := os.Stat(src)
-		if err != nil {
-			continue
+			info, err := os.Stat(src)
+			if err != nil {
+				continue
+			}
+
+			if !info.IsDir() {
+				continue
+			}
+
+			dst := filepath.Join(dstDir, name)
+			if err := copyDir(src, dst); err != nil {
+				return fmt.Errorf("copy skill %q: %w", name, err)
+			}
+			found = true
+			break
 		}
-
-		if !info.IsDir() {
-			fmt.Fprintf(os.Stderr, "warning: skill %q is not a directory\n", name)
-			continue
-		}
-
-		if err := copyDir(src, dst); err != nil {
-			return fmt.Errorf("copy skill %q: %w", name, err)
+		if !found {
+			fmt.Fprintf(os.Stderr, "warning: skill %q not found in any source directory\n", name)
 		}
 	}
 	return nil

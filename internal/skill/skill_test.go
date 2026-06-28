@@ -84,7 +84,7 @@ func TestInstallSkills(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := skill.InstallSkills(dst, src, []string{"my-skill"}); err != nil {
+	if err := skill.InstallSkills(dst, []string{src}, []string{"my-skill"}); err != nil {
 		t.Fatal(err)
 	}
 
@@ -103,9 +103,36 @@ func TestInstallSkills_MissingSkill(t *testing.T) {
 	dst := t.TempDir()
 	src := t.TempDir()
 
-	// Should not error, silently skip
-	if err := skill.InstallSkills(dst, src, []string{"nonexistent"}); err != nil {
+	// Should not error, warn via stderr
+	if err := skill.InstallSkills(dst, []string{src}, []string{"nonexistent"}); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestInstallSkills_FallbackSrc(t *testing.T) {
+	dst := t.TempDir()
+	src1 := t.TempDir()
+	src2 := t.TempDir()
+
+	skillDir := filepath.Join(src2, "fallback-skill")
+	if err := os.Mkdir(skillDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(skillDir, "SKILL.md"), []byte("# Fallback"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := skill.InstallSkills(dst, []string{src1, src2}, []string{"fallback-skill"}); err != nil {
+		t.Fatal(err)
+	}
+
+	installedFile := filepath.Join(dst, "fallback-skill", "SKILL.md")
+	data, err := os.ReadFile(installedFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(data) != "# Fallback" {
+		t.Fatalf("got %q, want %q", data, "# Fallback")
 	}
 }
 

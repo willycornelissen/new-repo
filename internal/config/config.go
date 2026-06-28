@@ -9,7 +9,7 @@ type Config struct {
 	ProjectName string
 	ProjectDir  string
 	Force       bool
-	SkillsSrc   string
+	SkillsSrcs  []string
 	SkillsFile  string
 	GitBin      string
 }
@@ -19,17 +19,20 @@ func New(name string, force bool) Config {
 		ProjectName: name,
 		ProjectDir:  name,
 		Force:       force,
-		SkillsSrc:   skillsSourceDir(),
+		SkillsSrcs:  skillsSourceDirs(),
 		GitBin:      "git",
 	}
 }
 
-func skillsSourceDir() string {
+func skillsSourceDirs() []string {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ""
+		return []string{".config/opencode/skills", ".opencode/skills"}
 	}
-	return filepath.Join(home, ".config", "opencode", "skills")
+	return []string{
+		filepath.Join(home, ".config", "opencode", "skills"),
+		filepath.Join(home, ".opencode", "skills"),
+	}
 }
 
 func (c Config) SkillsDir() string {

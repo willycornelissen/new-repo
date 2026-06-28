@@ -99,7 +99,7 @@ func main() {
 
 	if len(skillNames) > 0 {
 		skillsDir := cfg.SkillsDir()
-		if err := skill.InstallSkills(skillsDir, cfg.SkillsSrc, skillNames); err != nil {
+		if err := skill.InstallSkills(skillsDir, cfg.SkillsSrcs, skillNames); err != nil {
 			fmt.Fprintf(os.Stderr, "error: installing skills: %v\n", err)
 			os.Exit(1)
 		}
