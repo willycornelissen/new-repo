@@ -53,7 +53,6 @@ func InstallSkills(dstDir, srcDir string, names []string) error {
 
 		info, err := os.Stat(src)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "warning: skill %q not found at %s\n", name, src)
 			continue
 		}
 

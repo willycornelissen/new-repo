@@ -103,7 +103,7 @@ func TestInstallSkills_MissingSkill(t *testing.T) {
 	dst := t.TempDir()
 	src := t.TempDir()
 
-	// Should not error, just warn
+	// Should not error, silently skip
 	if err := skill.InstallSkills(dst, src, []string{"nonexistent"}); err != nil {
 		t.Fatal(err)
 	}
