@@ -1,3 +1,3 @@
-module new-repo
+module github.com/willycornelissen/new-repo
 
-go 1.21.6
+go 1.22.2
