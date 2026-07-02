@@ -20,11 +20,29 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() != 1 {
-		fmt.Fprintf(os.Stderr, "usage: new-repo [--force] [--skills-file <path>] <project-name>\n")
+		fmt.Fprintf(os.Stderr, "usage: new-repo [--force] [--skills-file <path>] <project-name | .>\n")
 		os.Exit(1)
 	}
 
 	name := flag.Arg(0)
+
+	if name == "." {
+		if !git.IsAvailable() {
+			fmt.Fprintf(os.Stderr, "error: git is not installed\n")
+			os.Exit(1)
+		}
+		dir, err := os.Getwd()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		if err := git.CloneTemplate(dir); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("installed ai-template at %s\n", dir)
+		return
+	}
 
 	if !nameRe.MatchString(name) {
 		fmt.Fprintf(os.Stderr, "error: invalid project name %q (must start with alphanumeric, containing alphanumeric, underscore, or hyphen)\n", name)
