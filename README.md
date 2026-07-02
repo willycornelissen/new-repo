@@ -13,16 +13,20 @@ Requer **Go 1.22+** e **Git** instalados no sistema.
 ## Uso
 
 ```bash
-new-repo [flags] <project-name>
+new-repo [flags] <project-name | .>
 ```
 
-Exemplo:
+Exemplos:
 
 ```bash
+# Criar um novo projeto em um subdiretório
 new-repo meu-projeto
+
+# Scaffold no diretório atual a partir de um template remoto
+new-repo .
 ```
 
-Isso cria a seguinte estrutura:
+O comando `new-repo meu-projeto` cria a seguinte estrutura:
 
 ```
 meu-projeto/
@@ -50,9 +54,20 @@ meu-projeto/
 
 | Flag | Descrição |
 |------|-----------|
-| `--force` | Sobrescreve diretório existente |
-| `--skills-file <path>` | Usa um arquivo `SKILLS.md` personalizado em vez do embutido |
+| `--force` | Sobrescreve diretório existente (apenas para `new-repo <name>`) |
+| `--skills-file <path>` | Usa um arquivo `SKILLS.md` personalizado em vez do embutido (apenas para `new-repo <name>`) |
 | `--help` | Exibe a ajuda |
+
+### `new-repo .`
+
+Quando usado com `.` como argumento, o comando não cria um novo diretório. Em vez disso, ele clona o template remoto [`ai-template`](https://github.com/willycornelissen/ai-template) diretamente no diretório atual, copia todo o conteúdo, remove o `.git` original e inicia um novo repositório Git.
+
+Esse modo **ignora** as flags `--force` e `--skills-file`, e não passa pelas etapas de validação de nome, geração de `.gitignore` ou instalação de skills — tudo vem do template clonado.
+
+```bash
+new-repo .
+# installed ai-template at /caminho/do/diretorio
+```
 
 ## Funcionalidades
 
