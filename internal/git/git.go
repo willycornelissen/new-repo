@@ -52,6 +52,29 @@ func CloneTemplate(dir string) error {
 	return Init(dir)
 }
 
+func CloneTemplateSkills() (skillsDir string, cleanup func(), err error) {
+	tmpDir, err := os.MkdirTemp("", "new-repo-skills-*")
+	if err != nil {
+		return "", nil, fmt.Errorf("creating temp dir: %w", err)
+	}
+	cleanup = func() { os.RemoveAll(tmpDir) }
+
+	cmd := exec.Command("git", "clone", "--depth", "1", TemplateRepoURL, tmpDir)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		cleanup()
+		return "", nil, fmt.Errorf("cloning template: %w\n%s", err, out)
+	}
+
+	skillsDir = filepath.Join(tmpDir, ".opencode", "skills")
+	if _, err := os.Stat(skillsDir); err != nil {
+		cleanup()
+		return "", nil, fmt.Errorf("skills dir not found in template: %w", err)
+	}
+
+	return skillsDir, cleanup, nil
+}
+
 func copyRecursive(src, dst string) error {
 	info, err := os.Stat(src)
 	if err != nil {

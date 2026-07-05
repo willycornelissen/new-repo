@@ -109,6 +109,16 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err := scaffold.WriteAgentsMD(name); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	if err := scaffold.WriteReadmeMD(name); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
 	skillNames, err := skill.ParseSkills(skillsContent)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: parsing skills: %v\n", err)
@@ -117,7 +127,32 @@ func main() {
 
 	if len(skillNames) > 0 {
 		skillsDir := cfg.SkillsDir()
-		if err := skill.InstallSkills(skillsDir, cfg.SkillsSrcs, skillNames); err != nil {
+		skillsSrc, cleanup, err := git.CloneTemplateSkills()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: downloading skills: %v\n", err)
+			os.Exit(1)
+		}
+		defer cleanup()
+
+		entries, err := os.ReadDir(skillsSrc)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: reading skills dir: %v\n", err)
+			os.Exit(1)
+		}
+		available := make(map[string]bool, len(entries))
+		for _, e := range entries {
+			if e.IsDir() {
+				available[e.Name()] = true
+			}
+		}
+		toInstall := make([]string, 0, len(skillNames))
+		for _, name := range skillNames {
+			if available[name] {
+				toInstall = append(toInstall, name)
+			}
+		}
+
+		if err := skill.InstallSkills(skillsDir, []string{skillsSrc}, toInstall); err != nil {
 			fmt.Fprintf(os.Stderr, "error: installing skills: %v\n", err)
 			os.Exit(1)
 		}

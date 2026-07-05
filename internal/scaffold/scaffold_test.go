@@ -157,6 +157,40 @@ func TestWriteOpenSpecConfig(t *testing.T) {
 	}
 }
 
+func TestWriteAgentsMD(t *testing.T) {
+	dir := t.TempDir()
+
+	if err := scaffold.WriteAgentsMD(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := os.ReadFile(filepath.Join(dir, "AGENTS.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(data) == 0 {
+		t.Fatal("expected non-empty AGENTS.md")
+	}
+}
+
+func TestWriteReadmeMD(t *testing.T) {
+	dir := t.TempDir()
+
+	if err := scaffold.WriteReadmeMD(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	data, err := os.ReadFile(filepath.Join(dir, "README.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(data) == 0 {
+		t.Fatal("expected non-empty README.md")
+	}
+}
+
 func TestWriteOpenSpecSkills(t *testing.T) {
 	dir := t.TempDir()
 
