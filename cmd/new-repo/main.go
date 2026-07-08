@@ -114,11 +114,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := scaffold.WriteReadmeMD(name); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
-
 	skillNames, err := skill.ParseSkills(skillsContent)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: parsing skills: %v\n", err)

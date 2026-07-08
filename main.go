@@ -55,6 +55,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	readmePath := filepath.Join(absPath, "README.md")
+	os.Remove(readmePath)
+
 	fmt.Println("Initializing new git repository...")
 	init := exec.Command("git", "init")
 	init.Dir = absPath

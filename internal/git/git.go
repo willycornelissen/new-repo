@@ -49,6 +49,8 @@ func CloneTemplate(dir string) error {
 		}
 	}
 
+	os.Remove(filepath.Join(dir, "README.md"))
+
 	return Init(dir)
 }
 
