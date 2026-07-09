@@ -260,8 +260,17 @@ func WriteSkillsMD(dir string, content string) error {
 }
 
 func CreateOpenCodeDirs(dir string) error {
-	skillsDir := filepath.Join(dir, ".opencode", "skills")
-	return os.MkdirAll(skillsDir, 0755)
+	dirs := []string{
+		filepath.Join(dir, ".opencode", "skills"),
+		filepath.Join(dir, ".opencode", "commands"),
+		filepath.Join(dir, ".opencode", "docs"),
+	}
+	for _, d := range dirs {
+		if err := os.MkdirAll(d, 0755); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func CreateOpenSpecDirs(dir string) error {

@@ -87,6 +87,49 @@ func TestHasSkills(t *testing.T) {
 	}
 }
 
+func TestExtractOpenCodeCommands(t *testing.T) {
+	dir := t.TempDir()
+
+	if err := embed.ExtractOpenCodeCommands(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) == 0 {
+		t.Fatal("expected command files to be extracted")
+	}
+
+	hasExplore := false
+	for _, e := range entries {
+		if e.Name() == "explore.md" {
+			hasExplore = true
+			break
+		}
+	}
+	if !hasExplore {
+		t.Fatal("expected explore.md in commands")
+	}
+}
+
+func TestExtractOpenCodeDocs(t *testing.T) {
+	dir := t.TempDir()
+
+	if err := embed.ExtractOpenCodeDocs(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) == 0 {
+		t.Fatal("expected doc files to be extracted")
+	}
+}
+
 func TestListAvailableSkillNames(t *testing.T) {
 	available := embed.ListAvailableSkillNames([]string{
 		"context7",

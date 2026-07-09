@@ -102,13 +102,20 @@ func TestCreateOpenCodeDirs(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	skillsDir := filepath.Join(dir, ".opencode", "skills")
-	info, err := os.Stat(skillsDir)
-	if err != nil {
-		t.Fatal(err)
+	expected := []string{
+		filepath.Join(dir, ".opencode", "skills"),
+		filepath.Join(dir, ".opencode", "commands"),
+		filepath.Join(dir, ".opencode", "docs"),
 	}
-	if !info.IsDir() {
-		t.Fatal("expected directory")
+
+	for _, path := range expected {
+		info, err := os.Stat(path)
+		if err != nil {
+			t.Fatalf("expected %s to exist: %v", path, err)
+		}
+		if !info.IsDir() {
+			t.Fatalf("expected %s to be a directory", path)
+		}
 	}
 }
 

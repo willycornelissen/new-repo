@@ -133,6 +133,16 @@ func SkillExists(name string) bool {
 	return err == nil && info.IsDir()
 }
 
+func ExtractOpenCodeCommands(dst string) error {
+	srcPath := filepath.Join(templateRoot, "opencode", "commands")
+	return extractDir(templateFS, srcPath, dst, nil)
+}
+
+func ExtractOpenCodeDocs(dst string) error {
+	srcPath := filepath.Join(templateRoot, "opencode", "docs")
+	return extractDir(templateFS, srcPath, dst, nil)
+}
+
 func ListAvailableSkillNames(skillNames []string) []string {
 	available := make([]string, 0, len(skillNames))
 	for _, name := range skillNames {

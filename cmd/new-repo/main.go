@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"new-repo/internal/config"
@@ -127,6 +128,18 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: extracting skills: %v\n", err)
 			os.Exit(1)
 		}
+	}
+
+	commandsDir := filepath.Join(name, ".opencode", "commands")
+	if err := embed.ExtractOpenCodeCommands(commandsDir); err != nil {
+		fmt.Fprintf(os.Stderr, "error: extracting commands: %v\n", err)
+		os.Exit(1)
+	}
+
+	docsDir := filepath.Join(name, ".opencode", "docs")
+	if err := embed.ExtractOpenCodeDocs(docsDir); err != nil {
+		fmt.Fprintf(os.Stderr, "error: extracting docs: %v\n", err)
+		os.Exit(1)
 	}
 
 	if err := git.Init(name); err != nil {
