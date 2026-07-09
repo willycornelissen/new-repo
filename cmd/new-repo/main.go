@@ -7,6 +7,7 @@ import (
 	"regexp"
 
 	"new-repo/internal/config"
+	"new-repo/internal/embed"
 	"new-repo/internal/git"
 	"new-repo/internal/scaffold"
 	"new-repo/internal/skill"
@@ -36,7 +37,11 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}
-		if err := git.CloneTemplate(dir); err != nil {
+		if err := embed.ExtractTemplate(dir); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		if err := git.Init(dir); err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			os.Exit(1)
 		}
@@ -46,11 +51,6 @@ func main() {
 
 	if !nameRe.MatchString(name) {
 		fmt.Fprintf(os.Stderr, "error: invalid project name %q (must start with alphanumeric, containing alphanumeric, underscore, or hyphen)\n", name)
-		os.Exit(1)
-	}
-
-	if !git.IsAvailable() {
-		fmt.Fprintf(os.Stderr, "error: git is not installed\n")
 		os.Exit(1)
 	}
 
@@ -122,33 +122,9 @@ func main() {
 
 	if len(skillNames) > 0 {
 		skillsDir := cfg.SkillsDir()
-		skillsSrc, cleanup, err := git.CloneTemplateSkills()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: downloading skills: %v\n", err)
-			os.Exit(1)
-		}
-		defer cleanup()
-
-		entries, err := os.ReadDir(skillsSrc)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: reading skills dir: %v\n", err)
-			os.Exit(1)
-		}
-		available := make(map[string]bool, len(entries))
-		for _, e := range entries {
-			if e.IsDir() {
-				available[e.Name()] = true
-			}
-		}
-		toInstall := make([]string, 0, len(skillNames))
-		for _, name := range skillNames {
-			if available[name] {
-				toInstall = append(toInstall, name)
-			}
-		}
-
-		if err := skill.InstallSkills(skillsDir, []string{skillsSrc}, toInstall); err != nil {
-			fmt.Fprintf(os.Stderr, "error: installing skills: %v\n", err)
+		toInstall := embed.ListAvailableSkillNames(skillNames)
+		if err := embed.ExtractSkills(skillsDir, toInstall); err != nil {
+			fmt.Fprintf(os.Stderr, "error: extracting skills: %v\n", err)
 			os.Exit(1)
 		}
 	}
