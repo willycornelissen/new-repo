@@ -101,6 +101,31 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 
 
+## 6. Pipeline de Implementação com IA
+
+Sequência recomendada de skills e comandos para um projeto completo:
+
+```
+1. DESCOBERTA      /research ─── office-hours ──→ documentation/research.md
+2. ESPECIFICAÇÃO   /tdd ──────── tlc-spec-driven ──→ specification/tdd.md
+                   /prd ──────── tlc-spec-driven ──→ specification/prd.md
+                   domain-analysis ── bounded contexts
+                   modular-architecture ── validação de boundaries
+3. PLANEJAMENTO    /roadmap ──── tlc-spec-driven ──→ specification/roadmap.md
+                   /plan ─────── tlc-spec-driven ──→ specification/plan.md
+4. EXECUÇÃO        /generate ─── tlc-spec-driven ──→ src/
+                   context7 ──── consulta de libs
+                   mermaid-studio ── diagramas
+5. REVISÃO         /review ───── code-review-skill
+                   spec-driven-eval ── scoring contra PRD
+6. ENTREGA         /doc ──────── docs-writer ──→ documentation/
+                   excalidraw-studio ── diagramas visuais
+                   graphify ──── grafos de conhecimento
+```
+
+**Feature única:** `/new-feature <slug>: <desc>` executa etapas 2 a 6 automaticamente.
+**Ideação → entrega:** `/research` → `/tdd` → `/prd` → `/roadmap` → `/plan` → `/generate` → `/review` → `/doc`
+
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
