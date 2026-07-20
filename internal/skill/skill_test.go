@@ -3,6 +3,7 @@ package skill_test
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"new-repo/internal/skill"
@@ -151,5 +152,74 @@ func TestEmbeddedSkills_Content(t *testing.T) {
 	}
 	if len(skills) == 0 {
 		t.Fatal("expected at least one skill in embedded SKILLS.md")
+	}
+}
+
+func TestFindGStackSkills_And_GenerateSkillsMD(t *testing.T) {
+	tempDir := t.TempDir()
+
+	// Write root SKILL.md (should be skipped)
+	if err := os.WriteFile(filepath.Join(tempDir, "SKILL.md"), []byte("---\nname: gstack\n---"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Write skill 1
+	skill1Dir := filepath.Join(tempDir, "skill1")
+	if err := os.Mkdir(skill1Dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	skill1Content := `---
+name: skill1
+description: Description 1
+---
+Some body`
+	if err := os.WriteFile(filepath.Join(skill1Dir, "SKILL.md"), []byte(skill1Content), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Write skill 2
+	skill2Dir := filepath.Join(tempDir, "skill2")
+	if err := os.Mkdir(skill2Dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	skill2Content := `---
+name: "skill2"
+description: "Description 2"
+---`
+	if err := os.WriteFile(filepath.Join(skill2Dir, "SKILL.md"), []byte(skill2Content), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	skills, err := skill.FindGStackSkills(tempDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(skills) != 2 {
+		t.Fatalf("expected 2 skills, got %d", len(skills))
+	}
+
+	var s1, s2 skill.GStackSkill
+	for _, s := range skills {
+		if s.Name == "skill1" {
+			s1 = s
+		} else if s.Name == "skill2" {
+			s2 = s
+		}
+	}
+
+	if s1.Name != "skill1" || s1.Description != "Description 1" {
+		t.Errorf("skill1 mismatch: %+v", s1)
+	}
+	if s2.Name != "skill2" || s2.Description != "Description 2" {
+		t.Errorf("skill2 mismatch: %+v", s2)
+	}
+
+	md := skill.GenerateSkillsMD(skills)
+	if !strings.Contains(md, "| **skill1** | Description 1 |") {
+		t.Errorf("generated markdown missing skill1: %s", md)
+	}
+	if !strings.Contains(md, "| **skill2** | Description 2 |") {
+		t.Errorf("generated markdown missing skill2: %s", md)
 	}
 }

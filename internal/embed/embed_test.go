@@ -102,15 +102,15 @@ func TestExtractOpenCodeCommands(t *testing.T) {
 		t.Fatal("expected command files to be extracted")
 	}
 
-	hasExplore := false
+	hasPlan := false
 	for _, e := range entries {
-		if e.Name() == "explore.md" {
-			hasExplore = true
+		if e.Name() == "plan.md" {
+			hasPlan = true
 			break
 		}
 	}
-	if !hasExplore {
-		t.Fatal("expected explore.md in commands")
+	if !hasPlan {
+		t.Fatal("expected plan.md in commands")
 	}
 }
 

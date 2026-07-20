@@ -114,3 +114,97 @@ func copyDir(src, dst string) error {
 
 	return nil
 }
+
+type GStackSkill struct {
+	Name        string
+	Description string
+	Path        string
+}
+
+func parseFrontmatter(filePath string) (string, string, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", "", err
+	}
+
+	content := string(data)
+	lines := strings.Split(content, "\n")
+
+	var name, desc string
+	inFrontmatter := false
+
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "---" {
+			if !inFrontmatter {
+				inFrontmatter = true
+				continue
+			} else {
+				break
+			}
+		}
+
+		if inFrontmatter {
+			if strings.HasPrefix(trimmed, "name:") {
+				name = strings.TrimSpace(strings.TrimPrefix(trimmed, "name:"))
+				name = strings.Trim(name, `"'`)
+			} else if strings.HasPrefix(trimmed, "description:") {
+				desc = strings.TrimSpace(strings.TrimPrefix(trimmed, "description:"))
+				desc = strings.Trim(desc, `"'`)
+			}
+		}
+	}
+
+	if name == "" {
+		name = filepath.Base(filepath.Dir(filePath))
+	}
+
+	return name, desc, nil
+}
+
+func FindGStackSkills(repoDir string) ([]GStackSkill, error) {
+	var skills []GStackSkill
+	err := filepath.Walk(repoDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() && info.Name() == ".git" {
+			return filepath.SkipDir
+		}
+
+		if !info.IsDir() && info.Name() == "SKILL.md" {
+			// Skip root SKILL.md
+			if filepath.Clean(path) == filepath.Clean(filepath.Join(repoDir, "SKILL.md")) {
+				return nil
+			}
+
+			name, desc, err := parseFrontmatter(path)
+			if err != nil {
+				return err
+			}
+
+			skills = append(skills, GStackSkill{
+				Name:        name,
+				Description: desc,
+				Path:        filepath.Dir(path),
+			})
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return skills, nil
+}
+
+func GenerateSkillsMD(skills []GStackSkill) string {
+	var sb strings.Builder
+	sb.WriteString("# Skills Instaladas — opencode\n\n")
+	sb.WriteString("| Skill | Descrição |\n")
+	sb.WriteString("|-------|-----------|\n")
+	for _, s := range skills {
+		sb.WriteString(fmt.Sprintf("| **%s** | %s |\n", s.Name, s.Description))
+	}
+	return sb.String()
+}

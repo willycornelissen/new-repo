@@ -6,58 +6,6 @@ import (
 	"path/filepath"
 )
 
-const openspecConfig = `schema: spec-driven
-
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-`
-
-var openSpecSkills = map[string]string{
-	"openspec-explore": join(
-		`---`,
-		`name: openspec-explore`,
-		`description: Enter explore mode - a thinking partner for exploring ideas and investigating problems.`,
-		`license: MIT`,
-		`compatibility: Requires openspec CLI.`,
-		`metadata:`,
-		`  author: openspec`,
-		`  version: "1.0"`,
-		`  generatedBy: "new-repo"`,
-		`---`,
-		``,
-		`Enter explore mode. Think deeply. Visualize freely. Follow the conversation wherever it goes.`,
-		``,
-		`IMPORTANT: Explore mode is for thinking, not implementing. Read files and investigate, but do NOT write code or implement features.`,
-		``,
-		`**The Stance**`,
-		`- Curious, not prescriptive - ask questions that emerge naturally`,
-		`- Visual - use diagrams liberally when they clarify thinking`,
-		`- Adaptive - follow interesting threads, pivot when new info emerges`,
-		`- Grounded - explore the actual codebase, don't just theorize`,
-		``,
-		`**What You Might Do**`,
-		`- Explore the problem space`,
-		`- Investigate the codebase`,
-		`- Compare options`,
-		`- Surface risks and unknowns`,
-		``,
-		`**OpenSpec Awareness**`,
-		`- Check "openspec list --json" for context`,
-		`- Reference existing artifacts in conversation`,
-		`- Offer to capture insights when decisions are made`,
-		``,
-		`**Guardrails**`,
-		`- Never write code or implement features`,
-		`- Don't fake understanding - dig deeper`,
-		`- Don't force structure - let patterns emerge`,
-		`- Do visualize - a good diagram is worth many paragraphs`,
-	),
-}
-
 const gitignore = `# Binaries
 *.exe
 *.exe~
@@ -171,11 +119,9 @@ Template para projetos de desenvolvimento de software assistido por IA usando [o
 
 ` + "```" + `
 ├── .opencode/          # Configuração do opencode
-│   ├── commands/       # Comandos personalizados (ex: opsx-explore)
+│   ├── commands/       # Comandos personalizados
 │   ├── skills/         # Skills instaladas
 │   └── package.json    # Dependências do opencode
-├── openspec/           # OpenSpec — framework de desenvolvimento spec-driven
-│   └── config.yaml     # Configuração do OpenSpec
 ├── SKILLS.md           # Lista de skills disponíveis
 └── README.md
 ` + "```" + `
@@ -197,26 +143,10 @@ Template para projetos de desenvolvimento de software assistido por IA usando [o
 | **code-review-skill** | Revisão de código estruturada para 20+ linguagens/frameworks |
 | **tlc-spec-driven** | Planejamento em 4 fases: Spec → Design → Tasks → Execute |
 
-## OpenSpec
-
-O diretório openspec/ contém a configuração do framework **OpenSpec**, que permite:
-
-- **Propostas** — Definição de escopo e objetivos
-- **Designs** — Decisões técnicas e arquiteturais
-- **Tasks** — Divisão de trabalho em tarefas atômicas
-- **Specs** — Especificações detalhadas de funcionalidades
-
-## Comandos
-
-| Comando | Descrição |
-|---------|-----------|
-| ` + "`" + `/opsx-explore` + "`" + ` | Modo exploratório para pensar, investigar e esclarecer requisitos sem implementar |
-
 ## Uso
 
 1. Ative uma skill relevante para sua tarefa (ex: ` + "`" + `tlc-spec-driven` + "`" + ` para planejamento)
-2. Use o OpenSpec para capturar requisitos e decisões
-3. Implemente com verificação atômica por tarefa
+2. Implemente com verificação atômica por tarefa
 `
 
 func WriteAgentsMD(dir string) error {
@@ -267,35 +197,6 @@ func CreateOpenCodeDirs(dir string) error {
 	}
 	for _, d := range dirs {
 		if err := os.MkdirAll(d, 0755); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func CreateOpenSpecDirs(dir string) error {
-	dirs := []string{
-		filepath.Join(dir, "openspec", "specs"),
-		filepath.Join(dir, "openspec", "changes", "archive"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-explore"),
-	}
-	for _, d := range dirs {
-		if err := os.MkdirAll(d, 0755); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func WriteOpenSpecConfig(dir string) error {
-	path := filepath.Join(dir, "openspec", "config.yaml")
-	return os.WriteFile(path, []byte(openspecConfig), 0644)
-}
-
-func WriteOpenSpecSkills(dir string) error {
-	for name, content := range openSpecSkills {
-		path := filepath.Join(dir, ".opencode", "skills", name, "SKILL.md")
-		if err := os.WriteFile(path, []byte(content), 0644); err != nil {
 			return err
 		}
 	}

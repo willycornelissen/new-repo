@@ -119,51 +119,6 @@ func TestCreateOpenCodeDirs(t *testing.T) {
 	}
 }
 
-func TestCreateOpenSpecDirs(t *testing.T) {
-	dir := t.TempDir()
-
-	if err := scaffold.CreateOpenSpecDirs(dir); err != nil {
-		t.Fatal(err)
-	}
-
-	expected := []string{
-		filepath.Join(dir, "openspec", "specs"),
-		filepath.Join(dir, "openspec", "changes", "archive"),
-		filepath.Join(dir, ".opencode", "skills", "openspec-explore"),
-	}
-
-	for _, path := range expected {
-		info, err := os.Stat(path)
-		if err != nil {
-			t.Fatalf("expected %s to exist: %v", path, err)
-		}
-		if !info.IsDir() {
-			t.Fatalf("expected %s to be a directory", path)
-		}
-	}
-}
-
-func TestWriteOpenSpecConfig(t *testing.T) {
-	dir := t.TempDir()
-
-	if err := scaffold.CreateOpenSpecDirs(dir); err != nil {
-		t.Fatal(err)
-	}
-
-	if err := scaffold.WriteOpenSpecConfig(dir); err != nil {
-		t.Fatal(err)
-	}
-
-	data, err := os.ReadFile(filepath.Join(dir, "openspec", "config.yaml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if len(data) == 0 {
-		t.Fatal("expected non-empty config.yaml")
-	}
-}
-
 func TestWriteAgentsMD(t *testing.T) {
 	dir := t.TempDir()
 
@@ -195,32 +150,5 @@ func TestWriteReadmeMD(t *testing.T) {
 
 	if len(data) == 0 {
 		t.Fatal("expected non-empty README.md")
-	}
-}
-
-func TestWriteOpenSpecSkills(t *testing.T) {
-	dir := t.TempDir()
-
-	if err := scaffold.CreateOpenSpecDirs(dir); err != nil {
-		t.Fatal(err)
-	}
-
-	if err := scaffold.WriteOpenSpecSkills(dir); err != nil {
-		t.Fatal(err)
-	}
-
-	expected := []string{
-		"openspec-explore",
-	}
-
-	for _, name := range expected {
-		path := filepath.Join(dir, ".opencode", "skills", name, "SKILL.md")
-		data, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatalf("expected %s/SKILL.md to exist: %v", name, err)
-		}
-		if len(data) == 0 {
-			t.Fatalf("expected non-empty SKILL.md for %s", name)
-		}
 	}
 }
