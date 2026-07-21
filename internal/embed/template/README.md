@@ -41,7 +41,7 @@ Template para projetos de desenvolvimento de software assistido por IA usando [o
 | `/new-feature` | Cria uma nova funcionalidade completa: TDD, PRD, roadmap, plano, código, review e documentação. Uso: `/new-feature <slug>: <nome-da-feature>` |
 | `/plan` | Gera plano de implementação a partir de `specification/prd.md` e `specification/roadmap.md` |
 | `/prd` | Cria um Product Requirements Document (PRD) para um projeto e salva em `specification/prd.md` |
-| `/research` | YC Office Hours — explora ideias, problemas ou conceitos de produto e salva em `documentation/research.md` |
+| `/idea` | YC Office Hours — explora ideias, problemas ou conceitos de produto e salva a ideia bruta em `specification/idea.md` e o resumo em `specification/research.md` |
 | `/review` | Revisa o código em `src/` comparando com `specification/prd.md` e `specification/plan.md` |
 | `/roadmap` | Gera roadmap com features e tarefas a partir de `specification/tdd.md` e `specification/prd.md` |
 | `/tdd` | Cria um Documento de Design Técnico (TDD) para um projeto e salva em `specification/tdd.md` |

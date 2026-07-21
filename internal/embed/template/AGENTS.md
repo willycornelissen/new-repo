@@ -106,7 +106,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 Sequência recomendada de skills e comandos para um projeto completo:
 
 ```
-1. DESCOBERTA      /research ─── office-hours ──→ documentation/research.md
+1. DESCOBERTA      /idea ─── office-hours ──→ specification/idea.md
 2. ESPECIFICAÇÃO   /tdd ──────── tlc-spec-driven ──→ specification/tdd.md
                    /prd ──────── tlc-spec-driven ──→ specification/prd.md
                    domain-analysis ── bounded contexts
@@ -124,7 +124,7 @@ Sequência recomendada de skills e comandos para um projeto completo:
 ```
 
 **Feature única:** `/new-feature <slug>: <desc>` executa etapas 2 a 6 automaticamente.
-**Ideação → entrega:** `/research` → `/tdd` → `/prd` → `/roadmap` → `/plan` → `/generate` → `/review` → `/doc`
+**Ideação → entrega:** `/idea` → `/tdd` → `/prd` → `/roadmap` → `/plan` → `/generate` → `/review` → `/doc`
 
 ---
 
