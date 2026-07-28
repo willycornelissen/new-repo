@@ -173,7 +173,13 @@ func main() {
 
 	docsDir := filepath.Join(name, ".opencode", "docs")
 	if err := embed.ExtractOpenCodeDocs(docsDir); err != nil {
-		fmt.Fprintf(os.Stderr, "error: extracting docs: %v\n", err)
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	agentsDir := filepath.Join(name, ".agents")
+	if err := embed.ExtractAgents(agentsDir); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
 

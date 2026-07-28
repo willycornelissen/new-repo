@@ -18,6 +18,7 @@ const templateRoot = "template"
 // This works around go:embed not matching directories starting with '.'.
 var dirRename = map[string]string{
 	"opencode": ".opencode",
+	"agents":   ".agents",
 }
 
 func ExtractTemplate(dst string) error {
@@ -140,6 +141,16 @@ func ExtractOpenCodeCommands(dst string) error {
 
 func ExtractOpenCodeDocs(dst string) error {
 	srcPath := filepath.Join(templateRoot, "opencode", "docs")
+	return extractDir(templateFS, srcPath, dst, nil)
+}
+
+func ExtractAgents(dst string) error {
+	srcPath := filepath.Join(templateRoot, "agents")
+	_, err := fs.Stat(templateFS, srcPath)
+	if err != nil {
+		// agents directory not embedded (template may not have it); skip silently
+		return nil
+	}
 	return extractDir(templateFS, srcPath, dst, nil)
 }
 

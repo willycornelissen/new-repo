@@ -20,9 +20,11 @@ for item in "$TMP_DIR"/*; do
   if [ "$base" = ".git" ]; then
     continue
   fi
-  # go:embed does not support directories starting with '.', so rename .opencode -> opencode
+  # go:embed does not support directories starting with '.', so rename .opencode -> opencode and .agents -> agents
   if [ "$base" = ".opencode" ]; then
     cp -r "$item" "$TEMPLATE_DIR/opencode"
+  elif [ "$base" = ".agents" ]; then
+    cp -r "$item" "$TEMPLATE_DIR/agents"
   else
     cp -r "$item" "$TEMPLATE_DIR/"
   fi
