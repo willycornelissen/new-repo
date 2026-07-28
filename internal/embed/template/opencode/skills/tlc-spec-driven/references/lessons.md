@@ -4,7 +4,7 @@
 
 **The split that keeps it alive**: the agent (you) supplies *judgment* — read the failure, phrase the lesson, cite its grounding. The script `scripts/lessons.py` owns everything *mechanical* — IDs, recurrence counting across distinct features, candidate→confirmed promotion, pruning, demotion, and rendering. Hand-kept bookkeeping is exactly what rots, so it is not your job; the script's job.
 
-**What feeds it**: only the execution signals already produced by the Verifier in [validate.md](validate.md) and written to `.specs/features/[feature]/validation.md`. No signal → no lesson. This is the hard gate: a lesson with no grounding in a real verification outcome is an opinion, and the script refuses it.
+**What feeds it**: only the execution signals already produced by the Verifier in [validate.md](validate.md) and written to `specification/features/[feature]/validation.md`. No signal → no lesson. This is the hard gate: a lesson with no grounding in a real verification outcome is an opinion, and the script refuses it.
 
 **Scope discipline (critical)**: this layer captures *execution* lessons that are project-local and grounded in a signal. It does **NOT** capture methodology opinions about the SDD process itself ("we should always discuss earlier"). Those are maintainer decisions that ship in a version bump — never auto-written. If a candidate lesson is really about how to run the skill rather than about this codebase, do not record it.
 
@@ -14,8 +14,8 @@
 
 | File | Owner | Purpose |
 | ---- | ----- | ------- |
-| `.specs/lessons.json` | script | Canonical machine state. Never hand-edit. |
-| `.specs/LESSONS.md` | script (rendered) | Human/agent-readable playbook. Read it; never write it by hand. |
+| `specification/lessons.json` | script | Canonical machine state. Never hand-edit. |
+| `specification/LESSONS.md` | script (rendered) | Human/agent-readable playbook. Read it; never write it by hand. |
 | `scripts/lessons.py` | package | The only way to mutate lessons. |
 
 `confirmed` lessons are the playbook the agent loads. `candidate` lessons are tracked but NOT trusted until corroborated across `promote_threshold` distinct features (default 2). `quarantined` lessons failed when applied and are ignored.
@@ -98,13 +98,13 @@ Apply the returned lessons as guidance while writing the spec / design. Do **not
 
 ## Fallback when code execution is unavailable
 
-Some harnesses cannot run Python. Only then: maintain `.specs/LESSONS.md` by hand, following the exact same rules — grounded entries only, candidate→confirmed after 2 distinct features, prune stale candidates. **This path is degraded**: hand bookkeeping is the failure mode this layer exists to avoid, so prefer the script wherever a code tool exists. State once in chat that you are in the no-script fallback so the user knows accounting is best-effort.
+Some harnesses cannot run Python. Only then: maintain `specification/LESSONS.md` by hand, following the exact same rules — grounded entries only, candidate→confirmed after 2 distinct features, prune stale candidates. **This path is degraded**: hand bookkeeping is the failure mode this layer exists to avoid, so prefer the script wherever a code tool exists. State once in chat that you are in the no-script fallback so the user knows accounting is best-effort.
 
 ---
 
 ## Disable
 
-This layer is additive and self-gating (no signal → no write). To turn it off for a project, delete `.specs/lessons.json` and `.specs/LESSONS.md` and skip the WRITE/READ steps. The core Specify→Design→Tasks→Execute flow is unaffected.
+This layer is additive and self-gating (no signal → no write). To turn it off for a project, delete `specification/lessons.json` and `specification/LESSONS.md` and skip the WRITE/READ steps. The core Specify→Design→Tasks→Execute flow is unaffected.
 
 ---
 

@@ -320,7 +320,7 @@ Dispatch a fresh sub-agent following the **Verifier** role described in [sub-age
 **What the Verifier does (full description in [validate.md](validate.md) and [sub-agents.md](sub-agents.md)):**
 1. **Spec-anchored coverage check** — re-derives coverage evidence-or-zero; confirms each test's asserted value matches the spec-defined outcome; flags spec-precision gaps.
 2. **Discrimination sensor** — injects a small behavior-level fault (flip a condition, change a return value, off-by-one) in a scratch/throwaway state (git stash or temp copy), runs the relevant tests, confirms they kill the mutant, then discards the mutation. Reports killed/survived; surviving mutants become fix tasks.
-3. **Persisted report** — writes `.specs/features/[feature]/validation.md` with PASS/FAIL, per-AC evidence (`file:line` + assertion + spec outcome), gate exit results, sensor result, and the diff/commit range covered.
+3. **Persisted report** — writes `specification/features/[feature]/validation.md` with PASS/FAIL, per-AC evidence (`file:line` + assertion + spec outcome), gate exit results, sensor result, and the diff/commit range covered.
 4. **Chat return** — returns a compact verdict + ranked gap list to the orchestrator in chat; the orchestrator surfaces it and routes gaps to fix tasks.
 
 The Verifier runs read-only over the real implementation tree (mutations run in a scratch state only). It does NOT fix.
@@ -418,7 +418,7 @@ If you are unsure whether more tasks remain, check `tasks.md`: if every task is 
 
 When work is interrupted, paused, or a session ends before the feature is complete:
 
-1. Open `.specs/STATE.md`.
+1. Open `specification/STATE.md`.
 2. Locate the `## Handoff` section.
 3. **Replace only that section's body** with the current snapshot (feature, phase/task, completed, in-progress `file:line`, next step, blockers, uncommitted files, branch). See [memory.md](memory.md) for the exact format.
 4. Do NOT touch the `## Decisions` section above it — decisions are written only during Design.

@@ -39,7 +39,7 @@
 
 ### 1. Review Design
 
-Read `.specs/features/[feature]/design.md` before creating tasks.
+Read `specification/features/[feature]/design.md` before creating tasks.
 
 ### 1.5. Generate the Test Coverage Matrix (ALWAYS)
 
@@ -167,7 +167,7 @@ Before showing tasks to the user, run ALL three pre-approval checks. These are N
 
 ---
 
-## Template: `.specs/features/[feature]/tasks.md`
+## Template: `specification/features/[feature]/tasks.md`
 
 ```markdown
 # [Feature] Tasks
@@ -180,7 +180,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 
 ---
 
-**Design**: `.specs/features/[feature]/design.md`
+**Design**: `specification/features/[feature]/design.md`
 **Status**: Draft | Approved | In Progress | Done
 
 ---

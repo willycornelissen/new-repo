@@ -81,7 +81,7 @@ Use subdomain-based layout only when **4+ of 6 criteria** are met (see `referenc
 
 ### Migration from Legacy Layout
 
-Packages previously used `core/`, `http/`, `persistence/` layer folders. All 5 packages are migrated. For migration rationale and before/after examples, see `.specs/features/*-flat-restructure/`. **Never scaffold new code using the legacy layout.**
+Packages previously used `core/`, `http/`, `persistence/` layer folders. All 5 packages are migrated. For migration rationale and before/after examples, see `specification/features/*-flat-restructure/`. **Never scaffold new code using the legacy layout.**
 
 ## The 10 Principles
 

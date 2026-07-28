@@ -54,10 +54,10 @@ Plan and implement features with precision. Granular tasks. Clear dependencies. 
 
 **Safety valve:** Even when Tasks is skipped, Execute ALWAYS starts by listing atomic steps inline (see [implement.md](references/implement.md)). If that listing reveals >5 steps or complex dependencies, STOP and create a formal `tasks.md` — the Tasks phase was wrongly skipped.
 
-## .specs Structure
+## specification Structure
 
 ```
-.specs/
+specification/
 ├── STATE.md            # Project memory: Decisions log (AD-NNN) + Handoff snapshot
 ├── LESSONS.md          # Self-improving lessons playbook (rendered by scripts/lessons.py — do not hand-edit)
 ├── lessons.json        # Canonical lessons state (machine-owned)
@@ -78,13 +78,13 @@ Plan and implement features with precision. Granular tasks. Clear dependencies. 
 
 **Resume work:**
 
-Read `.specs/STATE.md` — Handoff section for in-flight state, Decisions section to re-confirm active constraints — then propose the next step.
+Read `specification/STATE.md` — Handoff section for in-flight state, Decisions section to re-confirm active constraints — then propose the next step.
 
 ## Context Loading Strategy
 
 **On-demand load (only what the current task needs):**
 
-- `.specs/STATE.md` — Decisions section (read at Design, re-read on resume); Handoff section (read on resume only)
+- `specification/STATE.md` — Decisions section (read at Design, re-read on resume); Handoff section (read on resume only)
 - confirmed lessons — load at Specify and Design via `python3 scripts/lessons.py list --status confirmed` ([lessons.md](references/lessons.md)); confirmed only, never candidates
 - spec.md (when working on a specific feature)
 - context.md (when designing or implementing from user decisions)
@@ -108,7 +108,7 @@ Read `.specs/STATE.md` — Handoff section for in-flight state, Decisions sectio
 
 **One worker per task-budgeted batch (~7 tasks, whole phases):** Phases stay the semantic/dependency unit; a **batch** is the execution unit — one or more *consecutive whole phases* packed to ~7 tasks. Walk phases in order, accumulate whole phases into the current batch until it reaches the budget, then start the next — **never split a phase** across workers. ~20 tasks → ~3 workers; scales linearly (40 → ~6). Each worker executes all its tasks in order (implement → gate → atomic commit), then reports a compact summary (tasks done, commit hashes, test counts, deviations). Batches run sequentially — a batch never starts until the previous one reports all tasks complete. Workers never spawn further sub-agents.
 
-**Verifier (always-on, never prompted):** After the final task is committed, the orchestrator dispatches a fresh Verifier sub-agent automatically — regardless of phase count. Validation never requires a user prompt; it is the closing step of Execute. **Author ≠ verifier**: the Verifier re-derives coverage independently using evidence-or-zero; it does not inherit the author's mental model. The Verifier: (1) performs a **spec-anchored outcome check** — confirms each test's asserted value matches the spec-defined expected outcome, flags spec-precision gaps; (2) runs a **discrimination sensor** — injects behavior-level faults in scratch state, confirms tests kill them, discards mutations, surviving mutants become fix tasks; (3) writes `.specs/features/[feature]/validation.md` (PASS/FAIL, per-AC evidence, sensor result, diff range); (4) returns a compact verdict + ranked gap list to the orchestrator in chat. Gaps become fix tasks; the fix→re-verify loop is bounded to 3 iterations before escalating. (5) **distills lessons** — turns each grounded failure (surviving mutant, spec-precision gap, failed AC, SPEC_DEVIATION) into a reusable project-local lesson via `scripts/lessons.py`; a clean PASS records nothing (see [lessons.md](references/lessons.md)).
+**Verifier (always-on, never prompted):** After the final task is committed, the orchestrator dispatches a fresh Verifier sub-agent automatically — regardless of phase count. Validation never requires a user prompt; it is the closing step of Execute. **Author ≠ verifier**: the Verifier re-derives coverage independently using evidence-or-zero; it does not inherit the author's mental model. The Verifier: (1) performs a **spec-anchored outcome check** — confirms each test's asserted value matches the spec-defined expected outcome, flags spec-precision gaps; (2) runs a **discrimination sensor** — injects behavior-level faults in scratch state, confirms tests kill them, discards mutations, surviving mutants become fix tasks; (3) writes `specification/features/[feature]/validation.md` (PASS/FAIL, per-AC evidence, sensor result, diff range); (4) returns a compact verdict + ranked gap list to the orchestrator in chat. Gaps become fix tasks; the fix→re-verify loop is bounded to 3 iterations before escalating. (5) **distills lessons** — turns each grounded failure (surviving mutant, spec-precision gap, failed AC, SPEC_DEVIATION) into a reusable project-local lesson via `scripts/lessons.py`; a clean PASS records nothing (see [lessons.md](references/lessons.md)).
 
 **Standalone fallback:** Without sub-agents, run `validate.md` as an independent fresh-eyes pass after the final commit — including the spec-anchored check and discrimination sensor.
 
@@ -141,7 +141,7 @@ When researching, designing, or making any technical decision, follow this chain
 
 ```
 Step 1: Codebase → check existing code, conventions, and patterns already in use
-Step 2: Project docs → README, docs/, inline comments, `.specs/STATE.md` (Decisions)
+Step 2: Project docs → README, docs/, inline comments, `specification/STATE.md` (Decisions)
 Step 3: Context7 MCP → resolve library ID, then query for current API/patterns
 Step 4: Web search → official docs, reputable sources, community patterns
 Step 5: Flag as uncertain → "I'm not certain about X — here's my reasoning, but verify"

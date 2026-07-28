@@ -11,7 +11,7 @@
    - Scopes coverage to the feature's **git diff surface** (not the full repository)
    - Re-derives coverage independently using **evidence-or-zero**: every AC must be traced to a `file:line` + assertion expression; a criterion with no `file:line` citation counts as NOT covered
    - Runs the **spec-anchored outcome check** and the **discrimination sensor** (both described below)
-   - Writes `.specs/features/[feature]/validation.md` with the full evidence report
+   - Writes `specification/features/[feature]/validation.md` with the full evidence report
    - Returns a compact verdict + ranked gap list to the orchestrator in chat
    - Gaps become **fix tasks** routed back to an implementer; re-verification follows with a maximum of **3 fix→re-verify iterations** before escalating to the user
 
@@ -175,7 +175,7 @@ Fix tasks follow the same format as regular tasks and can be executed with the i
 
 After all checks complete, the Verifier MUST:
 
-1. **Write the persisted report** to `.specs/features/[feature]/validation.md` (see template below). This file is the evidence artifact — it survives the session and can be referenced by CI, reviewers, or future agents.
+1. **Write the persisted report** to `specification/features/[feature]/validation.md` (see template below). This file is the evidence artifact — it survives the session and can be referenced by CI, reviewers, or future agents.
 2. **Return a compact summary in chat** to the orchestrator (see Compact Chat Summary section below). The orchestrator surfaces it to the user and routes any ranked gaps to fix tasks.
 
 ### 10. Distill Lessons (MANDATORY when validation.md has signal)
@@ -194,7 +194,7 @@ The Verifier returns this block to the orchestrator after completing all checks:
 **Spec-anchored check**: [N/N ACs matched spec outcome | M spec-precision gaps flagged]
 **Gate**: [X passed, 0 failed]
 **Sensor**: [N mutations injected, N killed, N survived]
-**Report**: `.specs/features/[feature]/validation.md`
+**Report**: `specification/features/[feature]/validation.md`
 
 **Ranked gaps** (if FAIL):
 1. [Gap description] — [AC or criterion] — [file:line or "no evidence"]
@@ -203,13 +203,13 @@ The Verifier returns this block to the orchestrator after completing all checks:
 
 ---
 
-## Validation Report Template (`.specs/features/[feature]/validation.md`)
+## Validation Report Template (`specification/features/[feature]/validation.md`)
 
 ```markdown
 # [Feature] Validation
 
 **Date**: [YYYY-MM-DD]
-**Spec**: `.specs/features/[feature]/spec.md`
+**Spec**: `specification/features/[feature]/spec.md`
 **Diff range**: [commit range or branch..HEAD]
 **Verifier**: independent sub-agent (author ≠ verifier)
 
@@ -346,5 +346,5 @@ Update spec.md requirement statuses:
 - **Infer severity** — Never ask the user "how bad is this?"
 - **Max 3 diagnostic iterations** — Prevents infinite investigation loops
 - **Update traceability** — Every verified requirement updates spec.md status
-- **Always write the report file** — `.specs/features/[feature]/validation.md` is the persisted evidence artifact
+- **Always write the report file** — `specification/features/[feature]/validation.md` is the persisted evidence artifact
 - **Distill after writing** — turn grounded failures into lessons via `scripts/lessons.py` ([lessons.md](lessons.md)); clean PASS → no lesson

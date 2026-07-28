@@ -101,7 +101,7 @@ No raw logs, no full test output — only the above fields keep the main context
 1. **Spec-anchored coverage check** — re-derives coverage evidence-or-zero: every AC traced to `file:line` + assertion expression. For each covered criterion, confirms the test's asserted value matches the **spec-defined expected outcome** (not just that an assertion exists). Where the spec does not define a precise outcome, flags a **spec-precision gap** rather than passing silently.
 2. **Discrimination sensor** — injects a small behavior-level fault (flip a condition, change a return value, off-by-one, remove a required side effect) in a **scratch/throwaway state** (git stash or temp copy), runs the relevant tests, confirms they FAIL (kill the mutant), then discards the mutation. Tiered by risk: lightweight (1–3 mutations) for standard features; expanded (≥5 mutations or full mutation tooling) for P0/critical paths. Surviving mutants become fix tasks.
 3. Applies the **payload/conjunction rule**: checks payload fields are asserted on value/state, not just that the call occurred.
-4. **Writes the persisted report** to `.specs/features/[feature]/validation.md` — PASS/FAIL, per-AC evidence (`file:line` + assertion + spec outcome), sensor result (killed/survived per mutation), gate exit results, diff/commit range.
+4. **Writes the persisted report** to `specification/features/[feature]/validation.md` — PASS/FAIL, per-AC evidence (`file:line` + assertion + spec outcome), sensor result (killed/survived per mutation), gate exit results, diff/commit range.
 5. **Returns a compact verdict in chat** to the orchestrator.
 6. Does **NOT** write, modify, or fix any code or tests — the real working tree is never mutated (sensor mutations run in scratch state only).
 
@@ -112,7 +112,7 @@ No raw logs, no full test output — only the above fields keep the main context
 **Spec-anchored check**: [N/N ACs matched spec outcome | M spec-precision gaps flagged]
 **Gate**: [X passed, 0 failed]
 **Sensor**: [N mutations injected, N killed, N survived]
-**Report**: `.specs/features/[feature]/validation.md`
+**Report**: `specification/features/[feature]/validation.md`
 
 **Ranked gaps** (if FAIL):
 1. [Gap description] — [AC or criterion] — [file:line or "no evidence"]

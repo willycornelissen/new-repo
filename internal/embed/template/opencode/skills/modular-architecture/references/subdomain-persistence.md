@@ -4,7 +4,7 @@
 
 When a module uses the **subdomain-based** pattern (e.g., analytics with ingestion/aggregation/reporting), persistence ownership becomes a critical architectural decision. This reference covers the patterns for managing entities, repositories, and cross-subdomain data access within a single package.
 
-> **Note (content package):** The shared kernel anti-pattern may still exist in `package/content/shared/` from legacy layout. Refactoring is deferred — see `.specs/features/content-flat-restructure/`. New code must follow subdomain-owned persistence in aggregate folders.
+> **Note (content package):** The shared kernel anti-pattern may still exist in `package/content/shared/` from legacy layout. Refactoring is deferred — see `specification/features/content-flat-restructure/`. New code must follow subdomain-owned persistence in aggregate folders.
 
 ---
 

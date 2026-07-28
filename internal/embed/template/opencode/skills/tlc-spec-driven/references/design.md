@@ -8,12 +8,12 @@
 
 ### 1. Load Context
 
-Read `.specs/features/[feature]/spec.md` before designing. If `.specs/features/[feature]/context.md` exists, load it too — it contains implementation decisions that constrain the design (layout choices, behavior preferences, interaction patterns). Decisions marked as "Agent's Discretion" are yours to decide.
+Read `specification/features/[feature]/spec.md` before designing. If `specification/features/[feature]/context.md` exists, load it too — it contains implementation decisions that constrain the design (layout choices, behavior preferences, interaction patterns). Decisions marked as "Agent's Discretion" are yours to decide.
 
-**Mandatory: read `.specs/STATE.md` `## Decisions` now.** This MUST happen before any architectural choices are made. Every `active` `AD-NNN` entry is a project-level constraint this design must conform to. If a decision from a prior feature conflicts with what is best for this feature, you have two options — both require an explicit choice:
+**Mandatory: read `specification/STATE.md` `## Decisions` now.** This MUST happen before any architectural choices are made. Every `active` `AD-NNN` entry is a project-level constraint this design must conform to. If a decision from a prior feature conflicts with what is best for this feature, you have two options — both require an explicit choice:
 
 1. **Conform** — Design within the active constraint.
-2. **Supersede** — Append a new `AD-NNN` entry to `.specs/STATE.md` `## Decisions` that supersedes the old one (set the old entry's `status` to `superseded by AD-NNN`) and document the reason. The new decision becomes the project standard going forward.
+2. **Supersede** — Append a new `AD-NNN` entry to `specification/STATE.md` `## Decisions` that supersedes the old one (set the old entry's `status` to `superseded by AD-NNN`) and document the reason. The new decision becomes the project standard going forward.
 
 Silently ignoring an active decision is not an option — it creates invisible inconsistency across features.
 
@@ -65,12 +65,12 @@ If the feature involves data, define models before implementation.
 
 ---
 
-## Template: `.specs/features/[feature]/design.md`
+## Template: `specification/features/[feature]/design.md`
 
 ````markdown
 # [Feature] Design
 
-**Spec**: `.specs/features/[feature]/spec.md`
+**Spec**: `specification/features/[feature]/spec.md`
 **Status**: Draft | Approved
 
 ---
@@ -183,7 +183,7 @@ interface AnotherModel {
 | ----------------- | --------------- | ------------- |
 | [What we decided] | [What we chose] | [Why - brief] |
 
-> **Project-level decisions:** If a decision here sets a convention, pattern, or constraint that future features must follow, append it to `.specs/STATE.md` `## Decisions` as the next `AD-NNN` entry (see [memory.md](memory.md)). Feature-local decisions stay only in this table.
+> **Project-level decisions:** If a decision here sets a convention, pattern, or constraint that future features must follow, append it to `specification/STATE.md` `## Decisions` as the next `AD-NNN` entry (see [memory.md](memory.md)). Feature-local decisions stay only in this table.
 
 ---
 

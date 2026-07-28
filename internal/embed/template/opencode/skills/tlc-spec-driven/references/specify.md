@@ -81,7 +81,7 @@ Fix inline. This gate is bounded to THIS feature's stated dimensions and actual 
 
 ---
 
-## Template: `.specs/features/[feature]/spec.md`
+## Template: `specification/features/[feature]/spec.md`
 
 ```markdown
 # [Feature Name] Specification
