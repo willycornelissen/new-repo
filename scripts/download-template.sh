@@ -22,7 +22,17 @@ for item in "$TMP_DIR"/*; do
   fi
   # go:embed does not support directories starting with '.', so rename .opencode -> opencode and .agents -> agents
   if [ "$base" = ".opencode" ]; then
-    cp -r "$item" "$TEMPLATE_DIR/opencode"
+    mkdir -p "$TEMPLATE_DIR/opencode"
+    shopt -s dotglob
+    for sub in "$item"/*; do
+      subbase=$(basename "$sub")
+      # node_modules is a huge dependency directory that shouldn't be embedded
+      if [ "$subbase" = "node_modules" ]; then
+        continue
+      fi
+      cp -r "$sub" "$TEMPLATE_DIR/opencode/"
+    done
+    shopt -u dotglob
   elif [ "$base" = ".agents" ]; then
     cp -r "$item" "$TEMPLATE_DIR/agents"
   else
