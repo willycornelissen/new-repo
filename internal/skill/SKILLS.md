@@ -11,6 +11,7 @@
 | **excalidraw-studio** | Gera diagramas Excalidraw a partir de descrições em linguagem natural |
 | **graphify** | Converte qualquer entrada (código, docs, imagens) em grafo de conhecimento com comunidades e HTML |
 | **mermaid-studio** | Criação, validação e renderização de diagramas Mermaid (SVG/PNG/ASCII) |
+| **office-hours** | YC Office Hours: seis perguntas forçadas para startups ou brainstorming de design |
 | **skill-architect** | Guia para projetar e construir skills de alta qualidade do zero |
 | **spec-driven-eval** | Avalia o quão completamente uma implementação atende a um PRD/spec |
 | **tactical-ddd** | Detecta modelos de domínio anêmicos e refatora para modelos ricos com padrões DDD táticos |
